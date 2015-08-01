@@ -34,7 +34,7 @@ func NewString(s string, valid bool) String {
 	return String{
 		NullString: sql.NullString{
 			String: s,
-			Valid:  valid,
+			Valid: valid,
 		},
 	}
 }
@@ -57,14 +57,14 @@ func (s *String) UnmarshalJSON(data []byte) error {
 	default:
 		err = fmt.Errorf("json: cannot unmarshal %v into Go value of type null.String", reflect.TypeOf(v).Name())
 	}
-	s.Valid = (err == nil) && (s.String != "")
+	s.Valid = (err == nil && s.String != "")
 	return err
 }
 
 // MarshalJSON implements json.Marshaler.
 // It will encode null if this String is null.
 func (s String) MarshalJSON() ([]byte, error) {
-	if !s.Valid {
+	if s.IsZero() {
 		return []byte("null"), nil
 	}
 	return json.Marshal(s.String)
@@ -95,5 +95,5 @@ func (s String) Ptr() *string {
 // IsZero returns true for null or empty strings, for future omitempty support. (Go 1.4?)
 // Will return false s if blank but non-null.
 func (s String) IsZero() bool {
-	return !s.Valid
+	return !s.Valid || s.String == ""
 }
