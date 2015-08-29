@@ -6,8 +6,8 @@ package null
 import (
 	"encoding/json"
 	"fmt"
-	"reflect"
 	"github.com/lib/pq"
+	"reflect"
 	"time"
 )
 
@@ -34,7 +34,7 @@ func TimeFromPtr(t *time.Time) Time {
 func NewTime(t time.Time, valid bool) Time {
 	return Time{
 		NullTime: pq.NullTime{
-			Time: t,
+			Time:  t,
 			Valid: valid,
 		},
 	}
